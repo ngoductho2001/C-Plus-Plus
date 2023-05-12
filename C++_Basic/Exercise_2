@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<stdint.h>
+#include<math.h>
+
+class Rectangle{
+    private:
+        int8_t length;
+        int8_t width;
+    public:
+        Rectangle(int8_t length = {0}, int8_t width = {0});
+        int8_t getLength();
+        int8_t getWidth();
+        int chuVi();
+        void dienTich(int8_t length, int8_t width);
+        float duongCheo();
+        void checkHinhVuong();
+};
+
+Rectangle::Rectangle(int8_t length, int8_t width){
+    Rectangle::length = length;
+    Rectangle::width = width;
+}
+
+int Rectangle::chuVi(){
+    int8_t length = Rectangle::length;
+    int8_t width = Rectangle::width;
+    return (length + width) * 2;
+}
+
+void Rectangle::dienTich(int8_t length, int8_t width){
+    length = Rectangle::length;
+    width = Rectangle::width;
+    printf("dien tich: %d\n" ,length * width);
+}
+
+float Rectangle::duongCheo(){
+    int8_t length = Rectangle::length;
+    int8_t width = Rectangle::width;
+    return sqrt(length * length + width * width);
+}
+
+void Rectangle::checkHinhVuong(){
+    int8_t length = Rectangle::length;
+    int8_t width = Rectangle::width;
+    if(length == width){
+        printf("Day la hinh vuong");
+    }
+    else {
+        printf("Day chi la hinh chu nhat");
+    }
+}
+
+
+
+int main(){
+    int chieuDai, chieuRong;
+    printf("Input: ");
+    scanf("%d %d" ,&chieuDai ,&chieuRong);
+    Rectangle tinhtoan1(chieuDai, chieuRong);
+    printf("chu vi la: %d\n", tinhtoan1.chuVi());
+    printf("duong cheo la: %f\n", tinhtoan1.duongCheo());
+    tinhtoan1.dienTich(chieuDai,chieuRong);
+    tinhtoan1.checkHinhVuong(); 
+}
