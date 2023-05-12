@@ -1,0 +1,99 @@
+#include<stdio.h>
+#include<stdint.h>
+#include<math.h>
+
+class Diem{
+    private:
+        int8_t toadoX;
+        int8_t toadoY;    
+    public:
+        Diem(int8_t toadoX ={0}, int8_t toadoY = {0});
+        int8_t laytoadoX();
+        int8_t laytoadoY();
+};
+
+Diem::Diem(int8_t toadoX, int8_t toadoY){
+    Diem::toadoX = toadoX;
+    Diem::toadoY = toadoY;
+}
+
+int8_t Diem::laytoadoX(){
+    return Diem::toadoX;
+}
+
+int8_t Diem::laytoadoY(){
+    return Diem::toadoY;
+}
+
+class tinhtoanOXY{
+    private:
+        Diem diemA;
+        Diem diemB;
+        Diem diemC;
+        typedef enum{
+            khoangcach,
+            dientich
+        }tinhtoan;
+        tinhtoan tt;
+    public:
+        tinhtoanOXY(Diem diemA, Diem diemB);
+        tinhtoanOXY(Diem diemA, Diem diemB, Diem diemC);
+        double tinhkhoangcach();
+        double tinhdientich();
+
+};
+
+tinhtoanOXY::tinhtoanOXY(Diem diemA, Diem diemB){
+    tinhtoanOXY::diemA = diemA;
+    tinhtoanOXY::diemB = diemB;
+    tinhtoanOXY::tt = khoangcach;
+}
+
+tinhtoanOXY::tinhtoanOXY(Diem diemA, Diem diemB, Diem diemC){
+    tinhtoanOXY::diemA = diemA;
+    tinhtoanOXY::diemB = diemB;
+    tinhtoanOXY::diemC = diemC;
+    tinhtoanOXY::tt = dientich;
+}
+
+double tinhtoanOXY::tinhkhoangcach(){
+    if(tinhtoanOXY::tt == khoangcach){
+        int8_t deltaX = tinhtoanOXY::diemA.laytoadoX() - tinhtoanOXY::diemB.laytoadoX();
+        int8_t deltaY = tinhtoanOXY::diemA.laytoadoY() - tinhtoanOXY::diemB.laytoadoY();
+        return sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+    else
+        return -1;
+}
+
+double tinhtoanOXY::tinhdientich(){
+    if(tinhtoanOXY::tt == dientich){
+        int8_t xA = tinhtoanOXY::diemA.laytoadoX();
+        int8_t yA = tinhtoanOXY::diemA.laytoadoY();
+        int8_t xB = tinhtoanOXY::diemB.laytoadoX();
+        int8_t yB = tinhtoanOXY::diemB.laytoadoY();
+        int8_t xC = tinhtoanOXY::diemC.laytoadoX();
+        int8_t yC = tinhtoanOXY::diemC.laytoadoY();
+        return 0.5 * abs(xA * (yB - yC) + xB * (yC - yA) + xC * (yA - yB));
+    }
+    else{
+        return -1;
+    }
+}
+
+
+
+int main(){
+    int8_t xA, xB, xC, yA, yB, yC;
+    printf("2 diem:");
+    scanf("%d %d %d %d" ,&xA ,&yA, &xB, &yB);
+    Diem diemA(xA, yA);
+    Diem diemB(xB, yB);
+    tinhtoanOXY tinhtoan1(diemA, diemB);
+    printf("khoang cach: %f" ,tinhtoan1.tinhkhoangcach());
+    printf("3 diem:");
+    scanf("%d %d %d %d %d %d" ,&xA, &yA, &xB, &yB, &xC, &yC);
+    Diem diemC(xC, yC);
+    tinhtoanOXY tinhtoan2(diemA, diemB, diemC);
+    printf("dien tich: %lf", tinhtoan2.tinhdientich());
+}
