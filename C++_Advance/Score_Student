@@ -1,0 +1,224 @@
+#include <stdio.h>
+#include <string>
+#include <cstring>
+#include <stdint.h>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+typedef enum{
+    MALE,
+    FEMALE,
+}Sex;
+
+typedef enum{
+    EXCELLENT,
+    GOOD,
+    AVERAGE,
+    WEAK,
+}Conduct;
+
+class Student{
+    private:
+        uint8_t id;
+        string name;
+        uint8_t age;
+        Conduct conduct;
+        Sex sex;
+        float mathscore;
+        float chemistryscore;
+        float physicalscore;
+        float averagescore;
+    public:
+        Student();
+        void setStudent();
+        void setSex();
+        uint8_t getID();
+        string getName();
+        string getSex();
+        float getAvergeScore();
+        string getConduct();
+        void getInformationStudent();
+};
+
+Student::Student(){
+    static uint8_t countID = 1;
+    this ->id = countID;
+    countID++;
+    this ->name = " ";
+    this ->age = 0;
+    this ->sex = MALE;
+    this ->mathscore = 0;
+    this ->physicalscore = 0;
+    this ->chemistryscore = 0;
+    this ->conduct = WEAK;
+}
+
+void Student::setSex(){
+    int numberSex;
+    printf("(number 1: MALE-number 2: FEMALE)Enter your gender:\n");
+    if(numberSex == 1){
+        this ->sex = MALE;
+    } else if(numberSex == 2){
+        this ->sex = FEMALE;
+    }
+}
+
+void Student::setStudent(){
+    cin.ignore(100,'\n');
+    printf("Enter your name:\n");
+    getline(cin, this-> name);
+    printf("Enter your age:\n");
+    scanf("%d", &(this -> age));
+    cin.ignore(100,'\n');
+    this ->setSex();
+    cin.ignore(100,'\n');
+    printf("Enter your math score:\n");
+    scanf("%f", &(this -> mathscore));
+    printf("Enter your physical score:\n");
+    scanf("%f", &(this -> physicalscore));
+    printf("Enter your chemistry score:\n");
+    scanf("%f", &(this -> chemistryscore));
+}
+
+uint8_t Student::getID(){
+    return this -> id;
+}
+
+string Student::getName(){
+    return this -> name;
+}
+
+string Student::getSex(){
+    if(this -> sex == 0){
+        return "MALE";
+    }else{
+        return "FEMALE";
+    }
+}
+
+float Student::getAvergeScore(){
+    this -> averagescore =  (this -> mathscore + this -> physicalscore + this -> chemistryscore)/3;
+    return this -> averagescore;
+}
+
+string Student::getConduct(){
+    if(this -> averagescore < 5){
+        this -> conduct = WEAK;
+    } else if (this -> averagescore >= 5 && this -> averagescore < 7){
+        this -> conduct = AVERAGE;
+    } else if (this -> averagescore >= 7 && this -> averagescore < 9){
+        this -> conduct = GOOD;
+    } else if (this -> averagescore >= 9){
+        this -> conduct = EXCELLENT;
+    }
+}
+void Student::getInformationStudent(){
+    printf("Name: %s\tID: %d\tAge: %d\tSex: %s\t\nMath score: %f\tPhysical score: %f\tChemistry score: %f\tAverage score: %f\nConduct: %s\n",this->name.c_str(),this->id,this->age,this->getSex().c_str(),this->mathscore,this->physicalscore,this->chemistryscore,this->getAvergeScore(),this->getConduct().c_str());
+}
+
+class ManagementStudent{
+    private:
+        vector <Student> database;
+    public:
+        ManagementStudent();
+        void addStudent();
+        void updateStudent();
+        void deleteStudent();
+        void searchStudent();
+        void printStudent();
+};
+
+ManagementStudent::ManagementStudent(){
+    int key = 1;
+    int choice;
+    printf("===============================================\n");
+    do{
+        printf("=======This is a student management program=======\n");
+        printf("1.AddStudent\n2.UpdateStudent\n3.DeleteStudent\n4.SearchStudent\n5.PrintStudent\n");
+        scanf("%d",&choice);
+    switch (choice)
+    {
+        case 1:
+            do
+            {
+                this -> addStudent();
+                printf("1.Continue\n2.Exit\n");
+                int temporary;
+                scanf("%d", &temporary);
+                if(temporary == 2){
+                    break;
+                }
+            }while (1);      
+            break;
+        case 2:
+            this -> updateStudent();
+            break;
+        case 3:
+            this -> deleteStudent();
+            break;
+        case 4:
+            this -> searchStudent();
+            break;
+        case 5:
+            this -> printStudent();
+            break;
+        case 6:
+            key = 0;
+            break;
+        default:
+            break;
+    }
+    }while(key);
+}
+
+void ManagementStudent::addStudent(){
+    Student student;
+    student.setStudent();
+    database.push_back(student);
+}
+
+void ManagementStudent::updateStudent(){
+    uint8_t temporaryID;
+    printf("Enter ID of Student you want to update:\n");
+    scanf("%d",&temporaryID);
+    for(int i = 0; i < database.size(); i++){
+        if(database[i].getID() == temporaryID){
+            database[i].setStudent();
+        }
+    }
+}
+
+void ManagementStudent::deleteStudent(){
+    uint8_t temporaryID;
+    printf("Enter ID of Student you want to delete:\n");
+    scanf("%d",&temporaryID);
+    for(int i = 0; i < database.size(); i++){
+        if(database[i].getID() == temporaryID){
+            database.erase(database.begin() + i);
+        }
+    }
+}
+
+void ManagementStudent::searchStudent(){
+    string teporaryName;
+    printf("Enter Name of Student you want to search:\n");
+    getline(cin, teporaryName);
+    for(Student student: database){
+        if(student.getName() == teporaryName){
+            student.getInformationStudent();
+        }
+    }
+}
+
+void ManagementStudent::printStudent(){
+    for(Student student: database){
+        printf("----------------List Student:------------------\n");
+        student.getInformationStudent();
+    }
+}
+int main(int argc, char const *argv[])
+{
+    ManagementStudent tho;
+    return 0;
+}
